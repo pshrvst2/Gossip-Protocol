@@ -1,0 +1,108 @@
+[INFO ] 2015-10-02 01:20:49,046 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 01:20:49,098 Node.class main Machine IP: 192.17.11.57 and Machine ID: 192.17.11.57:1443766849098
+[INFO ] 2015-10-02 01:20:49,098 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 01:20:49,099 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 01:20:49,099 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 01:20:49,100 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 01:20:51,922 Node.class main User want to list the current members
+[INFO ] 2015-10-02 01:20:51,922 Node.class main *********MachineId********	||	**Last Seen**	||	Hearbeat	||	Is Active?
+[INFO ] 2015-10-02 01:20:51,923 Node.class main 192.17.11.57:1443766849098	||	1443766849098	||	1	||	true
+[INFO ] 2015-10-02 01:20:55,474 Node.class main Terminating
+[INFO ] 2015-10-02 01:21:25,064 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 01:21:25,070 Node.class main Machine IP: 192.17.11.57 and Machine ID: 192.17.11.57:1443766885070
+[INFO ] 2015-10-02 01:21:25,070 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 01:21:25,071 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 01:21:25,071 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 01:21:25,071 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 01:21:28,026 Node.class main User want to list the current members
+[INFO ] 2015-10-02 01:21:28,026 Node.class main *********MachineId********	||	**Last Seen**	||	Hearbeat	||	Is Active?
+[INFO ] 2015-10-02 01:21:28,027 Node.class main 192.17.11.57:1443766885070	||	1443766885070	||	1	||	true
+[INFO ] 2015-10-02 01:21:30,570 Node.class main Terminating
+[INFO ] 2015-10-02 01:26:23,621 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 01:26:23,637 Node.class main Machine IP: 192.17.11.57 and Machine ID: 192.17.11.57:1443767183637
+[INFO ] 2015-10-02 01:26:23,637 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 01:26:23,638 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 01:26:23,638 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 01:26:23,638 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 01:26:26,844 Node.class main Terminating
+[INFO ] 2015-10-02 01:26:34,940 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 01:26:34,946 Node.class main Machine IP: 192.17.11.57 and Machine ID: 192.17.11.57:1443767194946
+[INFO ] 2015-10-02 01:26:34,947 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 01:26:34,947 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 01:26:34,947 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 01:26:34,948 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 01:26:40,988 Node.class main User want to list the current members
+[INFO ] 2015-10-02 01:26:40,988 Node.class main *********MachineId********	||	**Last Seen**	||	Hearbeat	||	Is Active?
+[INFO ] 2015-10-02 01:26:40,989 Node.class main 192.17.11.57:1443767194946	||	1443767194946	||	1	||	true
+[INFO ] 2015-10-02 01:26:43,828 Node.class main Terminating
+[INFO ] 2015-10-02 01:27:17,308 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 01:27:17,320 Node.class main Machine IP: 192.17.11.57 and Machine ID: 192.17.11.57:1443767237320
+[INFO ] 2015-10-02 01:27:17,320 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 01:27:17,320 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 01:27:17,320 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 01:27:17,321 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 01:27:25,228 Node.class main Terminating
+[INFO ] 2015-10-02 17:15:48,898 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 17:15:49,333 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443824149333
+[INFO ] 2015-10-02 17:15:49,333 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 17:15:49,339 Node.class main Checking for the introducer.
+[ERROR] 2015-10-02 17:15:49,453 Node.class main java.io.NotSerializableException: NodeData
+[INFO ] 2015-10-02 17:15:49,454 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 17:15:49,454 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 17:16:28,456 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 17:16:28,468 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443824188468
+[INFO ] 2015-10-02 17:16:28,468 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 17:16:28,469 Node.class main Checking for the introducer.
+[ERROR] 2015-10-02 17:17:07,702 Node.class main java.io.NotSerializableException: NodeData
+[INFO ] 2015-10-02 17:17:07,706 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 17:17:07,708 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[ERROR] 2015-10-02 17:17:07,708 ListenerThread.class Thread-0 java.net.BindException: Address already in use
+[INFO ] 2015-10-02 17:19:09,283 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 17:19:09,300 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443824349299
+[INFO ] 2015-10-02 17:19:09,300 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 17:19:09,302 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 17:20:16,521 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 17:20:18,401 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[ERROR] 2015-10-02 17:20:18,410 ListenerThread.class Thread-0 java.net.BindException: Address already in use
+[INFO ] 2015-10-02 17:22:22,696 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 17:22:22,712 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443824542712
+[INFO ] 2015-10-02 17:22:22,712 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 17:22:22,713 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 17:22:33,444 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 17:22:39,603 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[ERROR] 2015-10-02 17:22:39,605 ListenerThread.class Thread-0 java.net.BindException: Address already in use
+[INFO ] 2015-10-02 17:51:17,539 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 17:51:17,575 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443826277575
+[INFO ] 2015-10-02 17:51:17,575 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 17:51:17,577 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 17:51:22,609 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 17:51:22,613 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[ERROR] 2015-10-02 17:51:22,615 ListenerThread.class Thread-0 java.net.BindException: Address already in use
+[INFO ] 2015-10-02 17:51:30,676 Node.class main User want to list the current members
+[INFO ] 2015-10-02 17:51:30,676 Node.class main *********MachineId********	||	**Last Seen**	||	Hearbeat	||	Is Active?
+[INFO ] 2015-10-02 17:51:30,704 Node.class main 130.126.28.40:1443826277575	||	1443826277575	||	1	||	true
+[INFO ] 2015-10-02 17:51:47,236 Node.class main Terminating
+[INFO ] 2015-10-02 17:53:58,145 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 17:53:58,156 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443826438156
+[INFO ] 2015-10-02 17:53:58,156 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 17:53:58,157 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 17:54:27,503 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 17:54:27,512 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443826467512
+[INFO ] 2015-10-02 17:54:27,512 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 17:54:27,513 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 17:54:38,199 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 17:54:38,205 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 17:54:53,007 Node.class main User want to list the current members
+[INFO ] 2015-10-02 17:54:53,007 Node.class main *********MachineId********	||	**Last Seen**	||	Hearbeat	||	Is Active?
+[INFO ] 2015-10-02 17:54:53,008 Node.class main 130.126.28.40:1443826467512	||	1443826467512	||	1	||	true
+[INFO ] 2015-10-02 17:54:57,558 Node.class main Terminating
+[INFO ] 2015-10-02 18:25:38,349 Node.class main Logging is succesfully initialized! Refer log file CS425_MP2_node.log
+[INFO ] 2015-10-02 18:25:38,378 Node.class main Machine IP: 130.126.28.40 and Machine ID: 130.126.28.40:1443828338378
+[INFO ] 2015-10-02 18:25:38,378 Node.class main Adding it's entry in the Gossip list!
+[INFO ] 2015-10-02 18:25:38,380 Node.class main Checking for the introducer.
+[INFO ] 2015-10-02 18:25:43,407 Node.class main Exiting from the method checkIntroducer.
+[INFO ] 2015-10-02 18:25:43,408 ListenerThread.class Thread-0 Listener thread is activated! Listening ....
+[INFO ] 2015-10-02 18:25:47,098 Node.class main User want to list the current members
+[INFO ] 2015-10-02 18:25:47,098 Node.class main *********MachineId********	||	**Last Seen**	||	Hearbeat	||	Is Active?
+[INFO ] 2015-10-02 18:25:47,099 Node.class main 130.126.28.40:1443828338378	||	1443828338378	||	1	||	true
+[INFO ] 2015-10-02 18:25:50,761 Node.class main Terminating
