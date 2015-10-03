@@ -32,7 +32,7 @@ public class ListenerThread extends Thread
 	public void run()
 	{
 		_logger.info("Listener thread is activated! Listening ....");
-		byte[] data = new byte[1024];
+		byte[] data = new byte[4096];
 		DatagramSocket listernerSocket;
 		try 
 		{
@@ -62,7 +62,7 @@ public class ListenerThread extends Thread
 						if(record.getValue().isActive())
 						{
 
-							if(Node._gossipMap.containsKey(machineId))
+							if(!Node._gossipMap.containsKey(machineId))
 							{
 								_logger.info("Added a new machine: "+machineId);
 								Node._gossipMap.put(machineId, map.get(machineId));
