@@ -59,22 +59,30 @@ public class ListenerThread extends Thread
 					{
 						String machineId = record.getKey().trim();
 						
-						if(!Node._gossipMap.containsKey(machineId))
+						if(record.getValue().isActive())
 						{
-							_logger.info("Added a new machine: "+machineId);
-							Node._gossipMap.put(machineId, map.get(machineId));
-						}
-						else
-						{
-							NodeData existingNode = Node._gossipMap.get(machineId);
-							NodeData recvNode = record.getValue();
-							if(recvNode.isActive() & existingNode.getLastRecordedTime() < recvNode.getLastRecordedTime())
+
+							if(Node._gossipMap.containsKey(machineId))
 							{
-								_logger.info("Changing the entries for machine: "+machineId);
-								//existingNode = recvNode;
-								//Node._gossipMap.remove(machineId);
-								//Node._gossipMap.put(machineId, recvNode);
-								Node._gossipMap.get(machineId).setLastRecordedTime(recvNode.getLastRecordedTime());
+								_logger.info("Added a new machine: "+machineId);
+								Node._gossipMap.put(machineId, map.get(machineId));
+								//Node._gossipMap.get(machineId).setLastRecordedTime(System.currentTimeMillis());
+							}
+							else
+							{
+								NodeData existingNode = Node._gossipMap.get(machineId);
+								NodeData recvNode = record.getValue();
+								if(existingNode.getLastRecordedTime() < recvNode.getLastRecordedTime())
+								{
+									_logger.info("Changing the entries for machine: "+machineId);
+									Node._gossipMap.get(machineId).setLastRecordedTime(System.currentTimeMillis());
+								}
+								else
+								{
+									// the system is probably dead, Mark it as in active.
+									_logger.info("Marking "+machineId+" as in active");
+									Node._gossipMap.get(machineId).setActive(false);
+								}
 							}
 						}
 					}
