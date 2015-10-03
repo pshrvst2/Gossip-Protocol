@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
@@ -34,9 +37,10 @@ public class Node
 	public static Logger _logger = Logger.getLogger(Node.class);
 	public final static int _portSender = 2001;
 	public final static int _portReceiver = 2000;
-	public static String _introducerIp = "130.126.28.40";
+	public static String _introducerIp = "192.17.11.99";
 	public static boolean _listenerThreadStop = false;
 	public static String _machineIp = "";
+	public final int _TfailInMilliSec = 2000;
 	
 	public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
 	// Thread safe data structure needed to store the details of all the machines in the 
@@ -82,7 +86,11 @@ public class Node
 			//Now open your socket and listen to other peers.
 			gossipListener = new ListenerThread(_portReceiver);
 			gossipListener.start();
-	
+			
+			// logic to send periodically
+			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(1);
+			_schedulerService.scheduleAtFixedRate(new SenderThread(_portSender), 0, 1, SECONDS);
+			
 			boolean flag = true;
 			while(flag)
 			{
@@ -222,7 +230,5 @@ public class Node
 		}
 		//return retVal;
 	}
-	
-	
 	
 }

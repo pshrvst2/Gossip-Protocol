@@ -20,7 +20,7 @@ public class SenderThread extends Thread
 	private int port;
 	private static String _machineIp;
 	
-	public SenderThread(int port, HashMap gossipM) 
+	public SenderThread(int port) 
 	{
 		this.port = port;
 		_machineIp = Node._machineIp;
