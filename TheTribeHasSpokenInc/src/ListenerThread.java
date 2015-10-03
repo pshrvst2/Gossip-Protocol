@@ -72,7 +72,7 @@ public class ListenerThread extends Thread
 							{
 								NodeData existingNode = Node._gossipMap.get(machineId);
 								NodeData recvNode = record.getValue();
-								if(existingNode.getLastRecordedTime() < recvNode.getLastRecordedTime())
+								if(existingNode.getLastRecordedTime() <= recvNode.getLastRecordedTime())
 								{
 									_logger.info("Changing the entries for machine: "+machineId);
 									Node._gossipMap.get(machineId).setLastRecordedTime(System.currentTimeMillis());
@@ -81,7 +81,7 @@ public class ListenerThread extends Thread
 								{
 									// the system is probably dead, Mark it as in active.
 									_logger.info("Marking "+machineId+" as in active");
-									Node._gossipMap.get(machineId).setActive(false);
+									//Node._gossipMap.get(machineId).setActive(false);
 								}
 							}
 						}

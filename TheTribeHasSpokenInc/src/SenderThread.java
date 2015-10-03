@@ -99,8 +99,10 @@ public class SenderThread extends Thread
 				String machinId = rec.getKey();
 				String[] temp = machinId.split(":");
 				if (!temp[0].equals(machineId))
-				retVal[i] = temp[0];
-				++i;
+				{
+					retVal[i] = temp[0];
+					++i;
+				}
 			}				
 			// get two random ip address 	
 			// if there only one member beside this machine. 
