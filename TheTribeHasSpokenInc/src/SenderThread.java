@@ -46,17 +46,22 @@ public class SenderThread extends Thread
 			
 			// update the heart-beat and time stamp before send out the membership list
 			updateHearbeatAndTimeStamp();
-			objOpStream.writeObject(Node._gossipMap);
-			buf = byteArrayOutputStream.toByteArray();
-			length = buf.length;
-		
-			for(String ip : ip2bSent)
+			// check if there's any member in the member list beside itself
+			if(!ip2bSent.isEmpty())
 			{
-				DatagramPacket dataPacket = new DatagramPacket(buf, length);
-				dataPacket.setAddress(InetAddress.getByName(ip));
-				dataPacket.setPort(port);
-				senderSocket.send(dataPacket);
+				objOpStream.writeObject(Node._gossipMap);
+				buf = byteArrayOutputStream.toByteArray();
+				length = buf.length;
+			
+				for(String ip : ip2bSent)
+				{
+					DatagramPacket dataPacket = new DatagramPacket(buf, length);
+					dataPacket.setAddress(InetAddress.getByName(ip));
+					dataPacket.setPort(port);
+					senderSocket.send(dataPacket);
+				}
 			}
+			
 		}
 		catch(SocketException e1)
 		{
@@ -68,43 +73,63 @@ public class SenderThread extends Thread
 			_logger.error(e);
 			e.printStackTrace();
 		}
-		
-
 	
 	}
 	
 	public static Set<String> get2RandomIpAddresses(String machineId)
 	{		
+
 		HashMap <String, NodeData> gossipMap = new HashMap <String, NodeData>();
 		gossipMap.putAll(Node._gossipMap);
+		Set<String> ips = new HashSet<String>(); 		
 		// take out the local id
 		int len = gossipMap.size() -1 ;
-		
-		// retrieve the ip list from membership list
-		String[] retVal = new String[len];
-		int i = 0;
-		for (HashMap.Entry<String, NodeData> rec : gossipMap.entrySet())
+		if (len != 0)
 		{
-			String machinId = rec.getKey();
-			String[] temp = machinId.split(":");
-			if (!temp[0].equals(machineId))
-			retVal[i] = temp[0];
-			++i;
+			// retrieve the ip list from membership list
+			String[] retVal = new String[len];
+			int i = 0;
+			for (HashMap.Entry<String, NodeData> rec : gossipMap.entrySet())
+			{
+				String machinId = rec.getKey();
+				String[] temp = machinId.split(":");
+				if (!temp[0].equals(machineId))
+				retVal[i] = temp[0];
+				++i;
+			}				
+			// get two random ip address 	
+			// if there only one member beside this machine. 
+			if(len == 1)
+			{
+				ips.add(retVal[0]);
+			}
+			// if there're two members other than itself
+			else if (len == 2)
+			{
+				ips.add(retVal[0]);
+				ips.add(retVal[1]);
+			}
+			// when there're more than 2 member, randomly select two 
+			else
+			{
+				while (ips.size()<2)
+				{
+					int index = (int)(Math.random()*(len-1));
+					ips.add(retVal[index]);
+				}	
+			}			
+		}
+		else
+		{
+			System.out.println("No member of the membership list");
 		}
 		
-		// get two random ip address 
-		Set<String> ips = new HashSet<String>(); 				
-		while (ips.size()<2)
-		{
-			int index = (int)(Math.random()*(len-1));
-			ips.add(retVal[index]);
-		}		
 		return ips;
 	}
 	
 	public static void updateHearbeatAndTimeStamp()
 	{
-		Node._gossipMap.get(_machineIp).setLastRecordedTime(System.currentTimeMillis());
-		Node._gossipMap.get(_machineIp).increaseHeartBeat();
+		Node._gossipMap.get(Node._machineId).setLastRecordedTime(System.currentTimeMillis());
+		Node._gossipMap.get(Node._machineId).increaseHeartBeat();
 	}
 }

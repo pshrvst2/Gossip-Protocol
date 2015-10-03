@@ -40,6 +40,7 @@ public class Node
 	public static String _introducerIp = "192.17.11.99";
 	public static boolean _listenerThreadStop = false;
 	public static String _machineIp = "";
+	public static String _machineId= "";
 	public final int _TfailInMilliSec = 2000;
 	
 	public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
@@ -70,13 +71,13 @@ public class Node
 			
 			//Concatenate the ip address with time stamp.
 			Long currTimeInMiliSec = System.currentTimeMillis();
-			String machineId = _machineIp + ":" + currTimeInMiliSec;
+			_machineId = _machineIp + ":" + currTimeInMiliSec;
 			
-			_logger.info("Machine IP: "+_machineIp+" and Machine ID: "+machineId);
+			_logger.info("Machine IP: "+_machineIp+" and Machine ID: "+_machineId);
 			_logger.info("Adding it's entry in the Gossip list!");
 			//System.out.println(machineId);
-			NodeData node = new NodeData(machineId, 1, currTimeInMiliSec, true);
-			_gossipMap.put(machineId, node);
+			NodeData node = new NodeData(_machineId, 1, currTimeInMiliSec, true);
+			_gossipMap.put(_machineId, node);
 			//_gossipList.add(node);
 			
 			
