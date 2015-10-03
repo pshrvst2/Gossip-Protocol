@@ -32,9 +32,9 @@ public class Node
 {
 	// Naming convention, variables which begin with _ are class members.
 	public static Logger _logger = Logger.getLogger(Node.class);
-	public final static int _portReceiver = 2000;
 	public final static int _portSender = 2001;
-	public static String _introducerIp = "192.17.11.57";
+	public final static int _portReceiver = 2000;
+	public static String _introducerIp = "130.126.28.40";
 	public static boolean _listenerThreadStop = false;
 	
 	public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
@@ -82,7 +82,8 @@ public class Node
 			//Now open your socket and listen to other peers.
 			gossipListener = new ListenerThread(_portReceiver);
 			gossipListener.start();
-			
+			String[] ipAddressList = getIpAddresses();
+			System.out.println(ipAddressList[0]);
 			boolean flag = true;
 			while(flag)
 			{
@@ -125,8 +126,6 @@ public class Node
 					
 				}
 			}
-			
-			
 		} 
 		catch (UnknownHostException e) 
 		{
@@ -223,6 +222,22 @@ public class Node
 			_logger.info("Exiting from the method checkIntroducer.");
 		}
 		//return retVal;
+	}
+	
+	
+	public static String[] getIpAddresses()
+	{
+		int len = _gossipMap.size();
+		String[] retVal = new String[len];
+		int i = 0;
+		for (HashMap.Entry<String, NodeData> rec : _gossipMap.entrySet())
+		{
+			String machinId = rec.getKey();
+			String[] temp = machinId.split(":");
+			retVal[i] = temp[0];
+			++i;
+		}
+		return retVal;
 	}
 
 }
