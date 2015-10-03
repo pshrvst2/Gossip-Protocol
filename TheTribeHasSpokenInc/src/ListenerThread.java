@@ -44,7 +44,7 @@ public class ListenerThread extends Thread
 					DatagramPacket receivedPacket = new DatagramPacket(data, data.length);
 					listernerSocket.receive(receivedPacket);
 					String sentence = new String( receivedPacket.getData());
-					System.out.println("RECEIVED: " + sentence);
+					//System.out.println("RECEIVED: " + sentence);
 					int port = receivedPacket.getPort();
 					InetAddress ipAddress = receivedPacket.getAddress();
 					_logger.info("Received packet from: "+ipAddress+" at port: "+port);
@@ -72,10 +72,10 @@ public class ListenerThread extends Thread
 							{
 								NodeData existingNode = Node._gossipMap.get(machineId);
 								NodeData recvNode = record.getValue();
-								if(existingNode.getLastRecordedTime() <= recvNode.getLastRecordedTime())
+								if(existingNode.getLastRecordedTime() < recvNode.getLastRecordedTime())
 								{
 									_logger.info("Changing the entries for machine: "+machineId);
-									Node._gossipMap.get(machineId).setLastRecordedTime(System.currentTimeMillis());
+									Node._gossipMap.get(machineId).setLastRecordedTime(recvNode.getLastRecordedTime());
 								}
 								else
 								{

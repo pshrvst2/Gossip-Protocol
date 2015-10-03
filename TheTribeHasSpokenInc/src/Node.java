@@ -91,7 +91,7 @@ public class Node
 			
 			// logic to send periodically
 			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(1);
-			_schedulerService.scheduleAtFixedRate(new SenderThread(_portSender), 0, 1, SECONDS);
+			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 1, SECONDS);
 			
 			boolean flag = true;
 			while(flag)
