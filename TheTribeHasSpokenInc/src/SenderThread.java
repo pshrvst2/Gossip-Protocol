@@ -47,9 +47,14 @@ public class SenderThread extends Thread
 			// update the heart-beat and time stamp before send out the membership list
 			updateHearbeatAndTimeStamp();
 			// check if there's any member in the member list beside itself
+			HashMap<String, NodeData> map = new HashMap<String, NodeData>();
+			for (HashMap.Entry<String, NodeData> record : Node._gossipMap.entrySet())
+			{
+				map.put(record.getKey(), record.getValue());
+			}
 			if(!ip2bSent.isEmpty())
 			{
-				objOpStream.writeObject(Node._gossipMap);
+				objOpStream.writeObject(map);
 				buf = byteArrayOutputStream.toByteArray();
 				length = buf.length;
 			
@@ -121,7 +126,7 @@ public class SenderThread extends Thread
 		}
 		else
 		{
-			System.out.println("No member of the membership list");
+			//System.out.println("No member of the membership list");
 		}
 		
 		return ips;

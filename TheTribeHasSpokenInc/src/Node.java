@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import org.apache.log4j.Logger;
@@ -190,13 +191,18 @@ public class Node
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			    ObjectOutputStream objOpStream = new ObjectOutputStream(byteArrayOutputStream);
 			    //objOpStream.writeObject(_gossipList);
-			    objOpStream.writeObject(_gossipMap);
+			    HashMap<String, NodeData> map = new HashMap<String, NodeData>();
+			    for (HashMap.Entry<String, NodeData> record : _gossipMap.entrySet())
+				{
+			    	map.put(record.getKey(), record.getValue());
+				}
+			    objOpStream.writeObject(map);
 			    buf = byteArrayOutputStream.toByteArray();
 			    length = buf.length;
 			    
 			    DatagramPacket dataPacket = new DatagramPacket(buf, length);
 				dataPacket.setAddress(InetAddress.getByName(_introducerIp));
-				dataPacket.setPort(_portSender);
+				dataPacket.setPort(_portReceiver);
 				int retry = 5;
 				//try five times as UDP is unreliable. At least one message will reach :)
 				while(retry > 0)
