@@ -36,6 +36,7 @@ public class Node
 	public final static int _portReceiver = 2000;
 	public static String _introducerIp = "130.126.28.40";
 	public static boolean _listenerThreadStop = false;
+	public static String _machineIp = "";
 	
 	public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
 	// Thread safe data structure needed to store the details of all the machines in the 
@@ -61,14 +62,13 @@ public class Node
 				System.out.println("Logging could not be initialized!");
 			}
 
-			String machineIp = "";
-			machineIp = InetAddress.getLocalHost().getHostAddress().toString();
+			_machineIp = InetAddress.getLocalHost().getHostAddress().toString();
 			
 			//Concatenate the ip address with time stamp.
 			Long currTimeInMiliSec = System.currentTimeMillis();
-			String machineId = machineIp + ":" + currTimeInMiliSec;
+			String machineId = _machineIp + ":" + currTimeInMiliSec;
 			
-			_logger.info("Machine IP: "+machineIp+" and Machine ID: "+machineId);
+			_logger.info("Machine IP: "+_machineIp+" and Machine ID: "+machineId);
 			_logger.info("Adding it's entry in the Gossip list!");
 			//System.out.println(machineId);
 			NodeData node = new NodeData(machineId, 1, currTimeInMiliSec, true);
@@ -77,13 +77,12 @@ public class Node
 			
 			
 			//check for introducer
-			checkIntroducer(machineIp);
+			checkIntroducer(_machineIp);
 			
 			//Now open your socket and listen to other peers.
 			gossipListener = new ListenerThread(_portReceiver);
 			gossipListener.start();
-			String[] ipAddressList = getIpAddresses();
-			System.out.println(ipAddressList[0]);
+	
 			boolean flag = true;
 			while(flag)
 			{
@@ -225,19 +224,5 @@ public class Node
 	}
 	
 	
-	public static String[] getIpAddresses()
-	{
-		int len = _gossipMap.size();
-		String[] retVal = new String[len];
-		int i = 0;
-		for (HashMap.Entry<String, NodeData> rec : _gossipMap.entrySet())
-		{
-			String machinId = rec.getKey();
-			String[] temp = machinId.split(":");
-			retVal[i] = temp[0];
-			++i;
-		}
-		return retVal;
-	}
-
+	
 }
