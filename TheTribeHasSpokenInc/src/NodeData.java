@@ -54,6 +54,10 @@ public class NodeData implements Serializable
 	public void setHeartBeat(long heartBeat) {
 		this.heartBeat = heartBeat;
 	}
+	public void increaseHeartBeat()
+	{
+		this.heartBeat += 1;
+	}
 	public long getLastRecordedTime() {
 		return lastRecordedTime;
 	}
