@@ -37,7 +37,7 @@ public class Node
 	public static Logger _logger = Logger.getLogger(Node.class);
 	public final static int _portSender = 2001;
 	public final static int _portReceiver = 2000;
-	public static String _introducerIp = "130.126.28.40";
+	public static String _introducerIp = "192.17.11.98";
 	public static boolean _listenerThreadStop = false;
 	public static String _machineIp = "";
 	public static String _machineId= "";

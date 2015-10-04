@@ -44,8 +44,6 @@ public class ListenerThread extends Thread
 				{
 					DatagramPacket receivedPacket = new DatagramPacket(data, data.length);
 					listernerSocket.receive(receivedPacket);
-					//String sentence = new String( receivedPacket.getData());
-					//System.out.println("RECEIVED: " + sentence);
 					int port = receivedPacket.getPort();
 					InetAddress ipAddress = receivedPacket.getAddress();
 					_logger.info("Received packet from: "+ipAddress+" at port: "+port);
@@ -61,35 +59,9 @@ public class ListenerThread extends Thread
 					{
 
 						String machineId = record.getKey().trim();
+						_logger.info("******machineId = "+machineId+" Heartbeat = "+record.getValue().getHeartBeat()+" ****************");
 						Thread updateThread = new MemberUpdateThread(machineId, record.getValue());
 						updateThread.start();
-						/*if(record.getValue().isActive())
-						{
-
-							if(!Node._gossipMap.containsKey(machineId))
-							{
-								_logger.info("Added a new machine: "+machineId);
-								Node._gossipMap.put(machineId, map.get(machineId));
-								//Node._gossipMap.get(machineId).setLastRecordedTime(System.currentTimeMillis());
-							}
-							else
-							{
-								NodeData existingNode = Node._gossipMap.get(machineId);
-								NodeData recvNode = record.getValue();
-								if(existingNode.getLastRecordedTime() < recvNode.getLastRecordedTime())
-								{
-									_logger.info("Changing the entries for machine: "+machineId);
-									Node._gossipMap.get(machineId).setLastRecordedTime(recvNode.getLastRecordedTime());
-									Node._gossipMap.get(machineId).setHeartBeat(recvNode.getHeartBeat());
-								}
-								else
-								{
-									// the system is probably dead, Mark it as in active.
-									_logger.info("Marking "+machineId+" as in active");
-									//Node._gossipMap.get(machineId).setActive(false);
-								}
-							}
-						}*/
 					}
 
 				}
