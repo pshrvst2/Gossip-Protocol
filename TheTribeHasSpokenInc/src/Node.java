@@ -8,10 +8,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -42,9 +39,10 @@ public class Node
 	public static boolean _listenerThreadStop = false;
 	public static String _machineIp = "";
 	public static String _machineId= "";
-	public final int _TfailInMilliSec = 2000;
+	public static int _TfailInMilliSec = 2000;
+	public static int _TCleanUpInMilliSec = 2000;
 	
-	public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
+	//public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
 	// Thread safe data structure needed to store the details of all the machines in the 
 	// Gossip group. Concurrent hashmap is our best option as it can store string, nodeData. 
 	public static ConcurrentHashMap<String, NodeData> _gossipMap = new ConcurrentHashMap<String, NodeData>();
@@ -96,10 +94,10 @@ public class Node
 			boolean flag = true;
 			while(flag)
 			{
-				System.out.println("Here are your options: ");
+				System.out.println("\nHere are your options: ");
 				System.out.println("Type 'list' to view the current membership list.");
 				System.out.println("Type 'quit' to quit the group and close servers");
-				System.out.println("Type 'whoami' to know your machine details");
+				System.out.println("Type 'info' to know your machine details");
 				System.out.println("Type 'join' to join the membership group");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				String userCmd = reader.readLine();
@@ -137,7 +135,7 @@ public class Node
 					//gossipListener.stop();
 					
 				}
-				else if(userCmd.equalsIgnoreCase("whoami"))
+				else if(userCmd.equalsIgnoreCase("info"))
 				{
 					NodeData temp = _gossipMap.get(_machineId);
 					String delim = "\t||\t";

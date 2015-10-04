@@ -43,7 +43,7 @@ public class ListenerThread extends Thread
 				{
 					DatagramPacket receivedPacket = new DatagramPacket(data, data.length);
 					listernerSocket.receive(receivedPacket);
-					String sentence = new String( receivedPacket.getData());
+					//String sentence = new String( receivedPacket.getData());
 					//System.out.println("RECEIVED: " + sentence);
 					int port = receivedPacket.getPort();
 					InetAddress ipAddress = receivedPacket.getAddress();
@@ -55,11 +55,13 @@ public class ListenerThread extends Thread
 					@SuppressWarnings("unchecked")
 					HashMap<String, NodeData> map = (HashMap<String, NodeData>) objInpStream.readObject();
 
+					
 					for (HashMap.Entry<String, NodeData> record : map.entrySet())
 					{
 						String machineId = record.getKey().trim();
-						
-						if(record.getValue().isActive())
+						Thread updateThread = new MemberUpdateThread(machineId, record.getValue());
+						updateThread.start();
+						/*if(record.getValue().isActive())
 						{
 
 							if(!Node._gossipMap.containsKey(machineId))
@@ -85,7 +87,7 @@ public class ListenerThread extends Thread
 									//Node._gossipMap.get(machineId).setActive(false);
 								}
 							}
-						}
+						}*/
 					}
 
 				}
@@ -107,4 +109,62 @@ public class ListenerThread extends Thread
 			e1.printStackTrace();
 		}
 	}
+	
+	public class MemberUpdateThread extends Thread 
+	{
+		private String id = "";
+		private NodeData nodeData = null;
+		
+		public MemberUpdateThread(String id, NodeData record)
+		{
+			this.id = id;
+			this.nodeData = record;
+		}
+		
+		public void run()
+		{
+			// Every record has its thread to check for the updates.
+			// Case when the member is still alive on the received list.
+			if(nodeData.isActive())
+			{
+				if(nodeData.getHeartBeat() > Node._gossipMap.get(id).getHeartBeat())
+				{
+					Node._gossipMap.get(id).increaseHeartBeat();
+					Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
+				}
+				else
+				{
+					if(System.currentTimeMillis() - Node._gossipMap.get(id).getLastRecordedTime()
+							> Node._TfailInMilliSec)
+					{
+						Node._gossipMap.get(id).setActive(false);
+						Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
+					}
+				}
+			}
+			// case when the received list has the member as dead.
+			else
+			{
+				NodeData localCopy = Node._gossipMap.get(id);
+				if(localCopy.isActive())
+				{
+					// TODO clash of thoughts here. Piyush wants an additional
+					// check on the heartbeat, Kevin disagrees.
+					Node._gossipMap.get(id).setActive(false);
+					Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
+					// We are updating this so that we can compare it with _TCleanUp.
+				}
+				else
+				{
+					if((System.currentTimeMillis() - localCopy.getLastRecordedTime())
+							> Node._TfailInMilliSec)
+					{
+						_logger.info("Removing machine id: "+id+" from membership list");
+						Node._gossipMap.remove(id);
+					}
+				}
+			}
+		}
+	}
 }
+
