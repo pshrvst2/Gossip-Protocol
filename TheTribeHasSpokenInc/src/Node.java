@@ -133,6 +133,7 @@ public class Node
 					_logger.info("Terminating");
 					_listenerThreadStop = true;
 					flag = false;
+					_schedulerService.shutdownNow();
 					//gossipListener.stop();
 					
 				}
