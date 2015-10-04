@@ -66,8 +66,30 @@ public class Node
 				_logger.info("Logging could not be initialized!");
 				System.out.println("Logging could not be initialized!");
 			}
-
+			
 			_machineIp = InetAddress.getLocalHost().getHostAddress().toString();
+			
+			boolean flag = true;
+			while(flag)
+			{
+				System.out.println("\tWelcome to TheTribeHasSpokenInc!");
+				System.out.println("\tPress 1 to join");
+				System.out.println("\tPress 2 for system info");
+				System.out.println("\t!!Press any other key to throw yourself out of the island!!");
+				BufferedReader readerKeyboard = new BufferedReader(new InputStreamReader(System.in));
+				String option = readerKeyboard.readLine();
+				if(option.equalsIgnoreCase("1"))
+					flag = false;
+				else if (option.equalsIgnoreCase("2"))
+				{
+					System.out.println("\tYou are at machine: "+_machineIp);
+				}
+				else
+				{
+					System.out.println("\tYou are out of the island now! Good Bye!!");
+					return;
+				}
+			}
 			
 			//Concatenate the ip address with time stamp.
 			Long currTimeInMiliSec = System.currentTimeMillis();
@@ -94,16 +116,14 @@ public class Node
 			
 			// logic to scan the list and perform necessary actions.
 			_schedulerService.scheduleAtFixedRate(new ListScanThread(), 0, 100, MILLISECONDS);
-			
-			
-			boolean flag = true;
+			flag = true;
 			while(flag)
 			{
 				System.out.println("\nHere are your options: ");
 				System.out.println("Type 'list' to view the current membership list.");
 				System.out.println("Type 'quit' to quit the group and close servers");
 				System.out.println("Type 'info' to know your machine details");
-				System.out.println("Type 'join' to join the membership group");
+				
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				String userCmd = reader.readLine();
 				if(userCmd.equalsIgnoreCase("list"))
