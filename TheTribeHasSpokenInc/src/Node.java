@@ -251,7 +251,7 @@ public class Node
 			    DatagramPacket dataPacket = new DatagramPacket(buf, length);
 				dataPacket.setAddress(InetAddress.getByName(_introducerIp));
 				dataPacket.setPort(_portReceiver);
-				int retry = 2;
+				int retry = 5;
 				//try five times as UDP is unreliable. At least one message will reach :)
 				while(retry > 0)
 				{
