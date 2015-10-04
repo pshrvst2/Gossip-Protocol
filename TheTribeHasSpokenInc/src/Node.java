@@ -13,11 +13,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
+
+
 
 /**
  * 
@@ -41,6 +44,8 @@ public class Node
 	public static String _machineId= "";
 	public static int _TfailInMilliSec = 3000;
 	public static int _TCleanUpInMilliSec = 6000;
+	public final static String[] _allMemberIpList = {"172.22.151.18","172.22.151.19","172.22.151.20","172.22.151.21","172.22.151.22","172.22.151.23"}; 
+	public static TimeUnit unit = MILLISECONDS;
 	
 	//public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
 	// Thread safe data structure needed to store the details of all the machines in the 
@@ -110,7 +115,6 @@ public class Node
 			gossipListener.start();
 			
 			// logic to send periodically
-			TimeUnit unit = MILLISECONDS;
 			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(2);
 			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 400, unit);
 			
@@ -259,6 +263,15 @@ public class Node
 					--retry;
 				}
 			}
+			else
+			{
+				_logger.info("********  Introducer first time intial or try to rejoin the group ***********");				
+				for(String memberIp : _allMemberIpList)
+				{
+					Thread IRThread = new IntroducerRejoinThread(memberIp);
+					IRThread.start();
+				}
+			}
 		}
 		catch(SocketException ex)
 		{
@@ -277,5 +290,61 @@ public class Node
 			_logger.info("Exiting from the method checkIntroducer.");
 		}
 		//return retVal;
+	}
+	
+	
+	public static class IntroducerRejoinThread extends Thread 
+	{
+		private String memberIp; 
+		public IntroducerRejoinThread(String potientalIp)
+		{
+			memberIp = potientalIp;
+		}
+		
+		public void run()
+		{
+			DatagramSocket socket = null;
+			
+			try
+			{
+				socket = new DatagramSocket();
+				int length = 0;
+				byte[] buf = null;
+				
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			    ObjectOutputStream objOpStream = new ObjectOutputStream(byteArrayOutputStream);
+			    HashMap<String, NodeData> map = new HashMap<String, NodeData>();
+			    for (HashMap.Entry<String, NodeData> record : _gossipMap.entrySet())
+				{
+			    	map.put(record.getKey(), record.getValue());
+				}
+			    objOpStream.writeObject(map);
+			    buf = byteArrayOutputStream.toByteArray();
+			    length = buf.length;
+			    
+			    DatagramPacket dataPacket = new DatagramPacket(buf, length);
+				dataPacket.setAddress(InetAddress.getByName(memberIp));
+				dataPacket.setPort(_portReceiver);
+				int retry = 3;
+				//try three times as UDP is unreliable. At least one message will reach :)
+				while(retry > 0)
+				{
+					socket.send(dataPacket);
+					--retry;
+				}
+			}
+			catch(SocketException e1)
+			{
+				_logger.error(e1);
+				e1.printStackTrace();
+			}
+			catch(Exception e)
+			{
+				_logger.error(e);
+				e.printStackTrace();
+			}
+			
+		}
+
 	}
 }
