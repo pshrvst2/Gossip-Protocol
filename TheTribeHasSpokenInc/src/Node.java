@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
@@ -90,6 +91,10 @@ public class Node
 			// logic to send periodically
 			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(1);
 			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 1, SECONDS);
+			
+			// logic to scan the list and perform necessary actions.
+			_schedulerService.scheduleAtFixedRate(new ListScanThread(), 0, 100, MILLISECONDS);
+			
 			
 			boolean flag = true;
 			while(flag)
@@ -245,5 +250,4 @@ public class Node
 		}
 		//return retVal;
 	}
-	
 }
