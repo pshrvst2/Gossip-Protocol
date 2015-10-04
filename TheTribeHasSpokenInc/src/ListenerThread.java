@@ -115,6 +115,7 @@ public class ListenerThread extends Thread
 				{
 					Node._gossipMap.get(id).increaseHeartBeat();
 					Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
+					Node._gossipMap.get(id).setActive(true);
 				}
 				// check for this process. is it inactive for a long time? Should I declare it dead?
 				else if(System.currentTimeMillis() - Node._gossipMap.get(id).getLastRecordedTime()

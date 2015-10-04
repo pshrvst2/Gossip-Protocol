@@ -39,8 +39,8 @@ public class Node
 	public static boolean _listenerThreadStop = false;
 	public static String _machineIp = "";
 	public static String _machineId= "";
-	public static int _TfailInMilliSec = 2000;
-	public static int _TCleanUpInMilliSec = 4000;
+	public static int _TfailInMilliSec = 3000;
+	public static int _TCleanUpInMilliSec = 6000;
 	
 	//public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
 	// Thread safe data structure needed to store the details of all the machines in the 
@@ -251,7 +251,7 @@ public class Node
 			    DatagramPacket dataPacket = new DatagramPacket(buf, length);
 				dataPacket.setAddress(InetAddress.getByName(_introducerIp));
 				dataPacket.setPort(_portReceiver);
-				int retry = 5;
+				int retry = 2;
 				//try five times as UDP is unreliable. At least one message will reach :)
 				while(retry > 0)
 				{
