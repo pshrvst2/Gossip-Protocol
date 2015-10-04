@@ -113,7 +113,7 @@ public class SenderThread extends Thread
 			{
 				ips.add(retVal[0]);
 			}
-			// if there're two members other than itself
+			// if there're two members other than itself			
 			else if (len == 2)
 			{
 				ips.add(retVal[0]);
@@ -124,8 +124,11 @@ public class SenderThread extends Thread
 			{
 				while (ips.size()<2)
 				{
-					int index = (int)(Math.random()*(len-1));
-					ips.add(retVal[index]);
+					// logic here only works for process num less than 10
+					double rand = Math.random();
+					rand = rand * 100;
+					int index = (int) (rand%len);
+					ips.add(retVal[index]);					
 				}	
 			}			
 		}
