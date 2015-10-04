@@ -44,7 +44,6 @@ public class Node
 	public static String _machineId= "";
 	public static int _TfailInMilliSec = 3000;
 	public static int _TCleanUpInMilliSec = 6000;
-	public final static String[] _allMemberIpList = {"172.22.151.18","172.22.151.19","172.22.151.20","172.22.151.21","172.22.151.22","172.22.151.23"}; 
 	public static TimeUnit unit = MILLISECONDS;
 	
 	//public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
@@ -264,19 +263,7 @@ public class Node
 					--retry;
 				}
 			}
-			else
-			{
-				// In this case we try to contact all the member see if there're any still-alive member whom keep a existing membership list
-				// If a old membership exists, add the introducer into the list and retrieve the membership list in the future which would 
-				// allows a new member to join again.
-				// Otherwise, it should be the first time initialization, just wait for and listen to a new member when it happen.  
-				_logger.info("********  Introducer first time intial or try to rejoin the group ***********");				
-				for(String memberIp : _allMemberIpList)
-				{
-					Thread IRThread = new IntroducerRejoinThread(memberIp);
-					IRThread.start();
-				}
-			}
+
 		}
 		catch(SocketException ex)
 		{
@@ -296,60 +283,5 @@ public class Node
 		}
 		//return retVal;
 	}
-	
-	
-	public static class IntroducerRejoinThread extends Thread 
-	{
-		private String memberIp; 
-		public IntroducerRejoinThread(String potientalIp)
-		{
-			memberIp = potientalIp;
-		}
-		
-		public void run()
-		{
-			DatagramSocket socket = null;
-			
-			try
-			{
-				socket = new DatagramSocket();
-				int length = 0;
-				byte[] buf = null;
-				
-				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			    ObjectOutputStream objOpStream = new ObjectOutputStream(byteArrayOutputStream);
-			    HashMap<String, NodeData> map = new HashMap<String, NodeData>();
-			    for (HashMap.Entry<String, NodeData> record : _gossipMap.entrySet())
-				{
-			    	map.put(record.getKey(), record.getValue());
-				}
-			    objOpStream.writeObject(map);
-			    buf = byteArrayOutputStream.toByteArray();
-			    length = buf.length;
-			    
-			    DatagramPacket dataPacket = new DatagramPacket(buf, length);
-				dataPacket.setAddress(InetAddress.getByName(memberIp));
-				dataPacket.setPort(_portReceiver);
-				int retry = 3;
-				//try three times as UDP is unreliable. At least one message will reach :)
-				while(retry > 0)
-				{
-					socket.send(dataPacket);
-					--retry;
-				}
-			}
-			catch(SocketException e1)
-			{
-				_logger.error(e1);
-				e1.printStackTrace();
-			}
-			catch(Exception e)
-			{
-				_logger.error(e);
-				e.printStackTrace();
-			}
-			
-		}
 
-	}
 }
