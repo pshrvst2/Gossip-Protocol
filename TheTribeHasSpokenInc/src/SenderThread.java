@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 public class SenderThread extends Thread
 {
-	public static Logger _logger = Logger.getLogger(ListenerThread.class);
+	public static Logger _logger = Logger.getLogger(SenderThread.class);
 	private int port;
 	private static String _machineIp;
 	
@@ -30,7 +30,7 @@ public class SenderThread extends Thread
 	public void run()
 	{
 		
-		_logger.info("Sender thread is activated! sending...");
+		//_logger.info("Sender thread is activated! sending started");
 		//byte[] data = new byte[1024];
 		DatagramSocket senderSocket;
 		try
@@ -66,7 +66,7 @@ public class SenderThread extends Thread
 					senderSocket.send(dataPacket);
 				}
 			}
-			
+			//_logger.info("Sender thread is activated! sending ends");
 		}
 		catch(SocketException e1)
 		{

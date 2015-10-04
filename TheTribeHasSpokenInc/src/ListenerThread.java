@@ -32,7 +32,7 @@ public class ListenerThread extends Thread
 
 	public void run()
 	{
-		_logger.info("Listener thread is activated! Listening ....");
+		//_logger.info("Listener thread is activated! Listening ....");
 		byte[] data = new byte[4096];
 		DatagramSocket listernerSocket;
 		try 

@@ -36,7 +36,7 @@ public class Node
 	public static Logger _logger = Logger.getLogger(Node.class);
 	public final static int _portSender = 2001;
 	public final static int _portReceiver = 2000;
-	public static String _introducerIp = "192.17.11.99";
+	public static String _introducerIp = "130.126.28.40";
 	public static boolean _listenerThreadStop = false;
 	public static String _machineIp = "";
 	public static String _machineId= "";
@@ -89,7 +89,7 @@ public class Node
 			gossipListener.start();
 			
 			// logic to send periodically
-			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(1);
+			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(2);
 			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 1, SECONDS);
 			
 			// logic to scan the list and perform necessary actions.
