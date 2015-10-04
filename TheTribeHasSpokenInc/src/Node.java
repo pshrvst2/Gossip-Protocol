@@ -43,7 +43,7 @@ public class Node
 	public static String _machineIp = "";
 	public static String _machineId= "";
 	public static int _TfailInMilliSec = 3000;
-	public static int _TCleanUpInMilliSec = 6000;
+	public static int _TCleanUpInMilliSec = 3000;
 	public static TimeUnit unit = MILLISECONDS;
 	
 	//public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
@@ -114,11 +114,19 @@ public class Node
 			gossipListener.start();
 			
 			// logic to send periodically
-			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(2);
+			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(3);
 			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 400, unit);
 			
 			// logic to scan the list and perform necessary actions.
 			_schedulerService.scheduleAtFixedRate(new ListScanThread(), 0, 100, unit);
+			
+			//logic to check whether the introducer is trying to rejoin again
+			if(_machineIp != _introducerIp)
+			{
+				// we will check this occasionally
+				_schedulerService.scheduleAtFixedRate(new IntroducerRejoinThread(), 0, 5000, unit);
+			}
+			
 			flag = true;
 			while(flag)
 			{
