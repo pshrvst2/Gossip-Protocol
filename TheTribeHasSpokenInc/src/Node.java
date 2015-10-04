@@ -224,8 +224,6 @@ public class Node
 				{
 					socket.send(dataPacket);
 					--retry;
-					//Thread currentTheard = Thread.currentThread();
-					Thread.sleep(1000);
 				}
 			}
 		}
@@ -239,11 +237,6 @@ public class Node
 			_logger.error(ioExcep);
 			ioExcep.printStackTrace();
 		} 
-		catch (InterruptedException e) 
-		{
-			_logger.error(e);
-			e.printStackTrace();
-		}
 		finally
 		{
 			if(socket != null)
