@@ -99,6 +99,8 @@ public class Node
 				System.out.println("Here are your options: ");
 				System.out.println("Type 'list' to view the current membership list.");
 				System.out.println("Type 'quit' to quit the group and close servers");
+				System.out.println("Type 'whoami' to know your machine details");
+				System.out.println("Type 'join' to join the membership group");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				String userCmd = reader.readLine();
 				if(userCmd.equalsIgnoreCase("list"))
@@ -133,6 +135,20 @@ public class Node
 					flag = false;
 					//gossipListener.stop();
 					
+				}
+				else if(userCmd.equalsIgnoreCase("whoami"))
+				{
+					NodeData temp = _gossipMap.get(_machineId);
+					String delim = "\t||\t";
+					System.out.println("*********MachineId********"+delim+"**Last Seen**"+delim+"Hearbeat"+delim+"Is Active?");
+					System.out.println(temp.getNodeId()
+							+delim+temp.getLastRecordedTime()
+							+delim+temp.getHeartBeat()+"\t"
+							+delim+temp.isActive());
+					_logger.info(temp.getNodeId()
+							+delim+temp.getLastRecordedTime()
+							+delim+temp.getHeartBeat()+""
+							+delim+temp.isActive());
 				}
 			}
 		} 
