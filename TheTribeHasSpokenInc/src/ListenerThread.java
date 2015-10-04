@@ -130,28 +130,23 @@ public class ListenerThread extends Thread
 			else
 			{
 				NodeData localCopy = Node._gossipMap.get(id);
-				// Consider a scenario: Process sent a heartbeat of "15 and dead" and local has "14 and alive". Clearly, mark him dead!
-				// Consider a scenario: Process sent a heartbeat of "14 and dead" and local has "14 and alive". Don't do anything but wait for _TFail. But it may also 
-				// 						happen that this was the last info sent regarding this process. So, have a check in scheduler or thread class. 
-				if(localCopy.isActive() & (localCopy.getHeartBeat() < nodeData.getHeartBeat()))
+				
+				// Just in case a dead member hasn't introduce to you before, we need to make sure we will not update our member list with this info
+				if(localCopy != null)
 				{
-					// TODO clash of thoughts here. Piyush wants an additional
-					// check on the heartbeat, Kevin disagrees.
-					_logger.info("Marking machine id: "+id+ " as Inactive (dead)");
-					Node._gossipMap.get(id).setActive(false);
-					Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
-					// We are updating this so that we can compare it with _TCleanUp.
-				}
-				// The else part has to handled in a scheduler as the last process will never be able to delete the dead member!
-				/*else
-				{
-					if((System.currentTimeMillis() - localCopy.getLastRecordedTime())
-							> Node._TfailInMilliSec)
+					// Consider a scenario: Process sent a heartbeat of "15 and dead" and local has "14 and alive". Clearly, mark him dead!
+					// Consider a scenario: Process sent a heartbeat of "14 and dead" and local has "14 and alive". Don't do anything but wait for _TFail. But it may also 
+					// 						happen that this was the last info sent regarding this process. So, have a check in scheduler or thread class. 
+					if(localCopy.isActive() & (localCopy.getHeartBeat() < nodeData.getHeartBeat()))
 					{
-						_logger.info("Removing machine id: "+id+" from membership list");
-						Node._gossipMap.remove(id);
+						// TODO clash of thoughts here. Piyush wants an additional
+						// check on the heartbeat, Kevin disagrees.
+						_logger.info("Marking machine id: "+id+ " as Inactive (dead)");
+						Node._gossipMap.get(id).setActive(false);
+						Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
+						// We are updating this so that we can compare it with _TCleanUp.
 					}
-				}*/
+				}
 			}
 		}
 	}

@@ -13,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import org.apache.log4j.Logger;
@@ -42,7 +40,7 @@ public class Node
 	public static String _machineIp = "";
 	public static String _machineId= "";
 	public static int _TfailInMilliSec = 2000;
-	public static int _TCleanUpInMilliSec = 2000;
+	public static int _TCleanUpInMilliSec = 4000;
 	
 	//public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
 	// Thread safe data structure needed to store the details of all the machines in the 
@@ -112,12 +110,12 @@ public class Node
 			gossipListener.start();
 			
 			// logic to send periodically
-			TimeUnit unit = SECONDS;
+			TimeUnit unit = MILLISECONDS;
 			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(2);
-			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 1, unit);
+			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 400, unit);
 			
 			// logic to scan the list and perform necessary actions.
-			_schedulerService.scheduleAtFixedRate(new ListScanThread(), 0, 100, MILLISECONDS);
+			_schedulerService.scheduleAtFixedRate(new ListScanThread(), 0, 100, unit);
 			flag = true;
 			while(flag)
 			{
