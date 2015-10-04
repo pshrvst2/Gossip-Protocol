@@ -66,10 +66,6 @@ public class ListenerThread extends Thread
 							Thread updateThread = new MemberUpdateThread(machineId, record.getValue());
 							updateThread.start();
 						}
-						else
-						{
-							_logger.info("!!!!!!!!!!!!!Suicide prevented ! you saved your own life!!");
-						}
 					}
 
 				}

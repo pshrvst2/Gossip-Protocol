@@ -51,6 +51,8 @@ public class SenderThread extends Thread
 			for (HashMap.Entry<String, NodeData> record : Node._gossipMap.entrySet())
 			{
 				map.put(record.getKey(), record.getValue());
+				_logger.info("packet info: id "+record.getValue().getNodeId() + " || time stamp: "+ record.getValue().getLastRecordedTime()+ 
+						" || heartbeat: "+record.getValue().getHeartBeat()+ " || status: "+record.getValue().isActive());
 			}
 			if(!ip2bSent.isEmpty())
 			{
@@ -64,6 +66,7 @@ public class SenderThread extends Thread
 					dataPacket.setAddress(InetAddress.getByName(ip));
 					dataPacket.setPort(port);
 					senderSocket.send(dataPacket);
+					_logger.info("Sent packet form machine ip : "+ _machineIp + " to machine ip : "+ ip );					
 				}
 			}
 			//_logger.info("Sender thread is activated! sending ends");
