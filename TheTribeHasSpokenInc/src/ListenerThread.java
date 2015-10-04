@@ -58,6 +58,7 @@ public class ListenerThread extends Thread
 					
 					for (HashMap.Entry<String, NodeData> record : map.entrySet())
 					{
+												
 						String machineId = record.getKey().trim();
 						Thread updateThread = new MemberUpdateThread(machineId, record.getValue());
 						updateThread.start();
@@ -127,7 +128,14 @@ public class ListenerThread extends Thread
 			// Case when the member is still alive on the received list.
 			if(nodeData.isActive())
 			{
-				if(nodeData.getHeartBeat() > Node._gossipMap.get(id).getHeartBeat())
+				
+				if(!Node._gossipMap.containsKey(id))
+				{
+					_logger.info("Added a new machine: "+id);
+					Node._gossipMap.put(id, nodeData);
+					//Node._gossipMap.get(machineId).setLastRecordedTime(System.currentTimeMillis());
+				}
+				else if(nodeData.getHeartBeat() > Node._gossipMap.get(id).getHeartBeat())
 				{
 					Node._gossipMap.get(id).increaseHeartBeat();
 					Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
