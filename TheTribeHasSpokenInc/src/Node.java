@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -111,8 +112,9 @@ public class Node
 			gossipListener.start();
 			
 			// logic to send periodically
+			TimeUnit unit = SECONDS;
 			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(2);
-			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 1, SECONDS);
+			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 1, unit);
 			
 			// logic to scan the list and perform necessary actions.
 			_schedulerService.scheduleAtFixedRate(new ListScanThread(), 0, 100, MILLISECONDS);
@@ -155,7 +157,10 @@ public class Node
 					System.out.println("Terminating");
 					_logger.info("Terminating");
 					_listenerThreadStop = true;
+					Node._gossipMap.get(_machineId).setActive(false);
+					Node._gossipMap.get(_machineId).increaseHeartBeat();
 					flag = false;
+					Thread.sleep(1001);
 					_schedulerService.shutdownNow();
 					//gossipListener.stop();
 					
@@ -184,10 +189,15 @@ public class Node
 		{
 			_logger.error(e);
 			e.printStackTrace();
+		} catch (InterruptedException e) 
+		{
+			_logger.error(e);
+			e.printStackTrace();
 		}
 		finally
 		{
-			//
+			System.out.println("Good Bye!");
+			_logger.info("Good Bye!");
 		}
 
 	}
