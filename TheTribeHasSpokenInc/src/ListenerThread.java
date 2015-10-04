@@ -76,6 +76,7 @@ public class ListenerThread extends Thread
 								{
 									_logger.info("Changing the entries for machine: "+machineId);
 									Node._gossipMap.get(machineId).setLastRecordedTime(recvNode.getLastRecordedTime());
+									Node._gossipMap.get(machineId).setHeartBeat(recvNode.getHeartBeat());
 								}
 								else
 								{
