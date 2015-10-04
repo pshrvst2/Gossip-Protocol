@@ -234,8 +234,9 @@ public class Node
 		{
 			if(!ip.equalsIgnoreCase(_introducerIp))
 			{
-				//if this is the case, introduce yourself to the Introducer
-				// so that you are registered to its list and start participating.
+				//if this is the case, either the introducer is the first time initialized or trying to rejoin the existing group
+				// so we try to contact all the member to contact all the member add itself to the list and retrieve the existing
+				// list from any alive members
 				socket = new DatagramSocket();
 				int length = 0;
 				byte[] buf = null;
@@ -256,7 +257,7 @@ public class Node
 				dataPacket.setAddress(InetAddress.getByName(_introducerIp));
 				dataPacket.setPort(_portReceiver);
 				int retry = 3;
-				//try five times as UDP is unreliable. At least one message will reach :)
+				//try three times as UDP is unreliable. At least one message will reach :)
 				while(retry > 0)
 				{
 					socket.send(dataPacket);
@@ -265,6 +266,10 @@ public class Node
 			}
 			else
 			{
+				// In this case we try to contact all the member see if there're any still-alive member whom keep a existing membership list
+				// If a old membership exists, add the introducer into the list and retrieve the membership list in the future which would 
+				// allows a new member to join again.
+				// Otherwise, it should be the first time initialization, just wait for and listen to a new member when it happen.  
 				_logger.info("********  Introducer first time intial or try to rejoin the group ***********");				
 				for(String memberIp : _allMemberIpList)
 				{
