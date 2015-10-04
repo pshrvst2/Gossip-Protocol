@@ -60,8 +60,16 @@ public class ListenerThread extends Thread
 
 						String machineId = record.getKey().trim();
 						_logger.info("******machineId = "+machineId+" Heartbeat = "+record.getValue().getHeartBeat()+" ****************");
-						Thread updateThread = new MemberUpdateThread(machineId, record.getValue());
-						updateThread.start();
+						// to prevent the machine accidentally mark itself dead just because other say so. 
+						if(!machineId.equalsIgnoreCase(Node._machineId))
+						{
+							Thread updateThread = new MemberUpdateThread(machineId, record.getValue());
+							updateThread.start();
+						}
+						else
+						{
+							_logger.info("!!!!!!!!!!!!!Suicide prevented ! you saved your own life!!");
+						}
 					}
 
 				}
