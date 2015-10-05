@@ -38,7 +38,8 @@ public class Node
 	public static Logger _logger = Logger.getLogger(Node.class);
 	public final static int _portSender = 2001;
 	public final static int _portReceiver = 2000;
-	public static String _introducerIp = "172.22.151.17";
+	//public static String _introducerIp = "172.22.151.17";
+	public static String _introducerIp = "130.126.28.28";
 	public static boolean _listenerThreadStop = false;
 	public static String _machineIp = "";
 	public static String _machineId= "";
@@ -267,8 +268,8 @@ public class Node
 	{
 		try 
 		{
-			PatternLayout lyt = new PatternLayout("%d");
-			RollingFileAppender rollingFileAppender = new RollingFileAppender(lyt, "CS425_MP2_node_plot.log");
+			PatternLayout lyt = new PatternLayout("%d %m%n");
+			RollingFileAppender rollingFileAppender = new RollingFileAppender(lyt, "plot.log");
 			rollingFileAppender.setLayout(lyt);
 			rollingFileAppender.setName("LOGFILE");
 			rollingFileAppender.setMaxFileSize("64MB");

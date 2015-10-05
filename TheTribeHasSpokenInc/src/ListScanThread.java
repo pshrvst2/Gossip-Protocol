@@ -47,7 +47,7 @@ public class ListScanThread extends Thread {
 			counts++;
 		}
 		//_logger.info("ListScanThread is activated! Listening ends");
-		_logger.info(counts);
+		_logger.info("\t"+counts);
 	}
 
 }
