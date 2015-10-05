@@ -23,7 +23,6 @@ public class ListScanThread extends Thread {
 	public void run()
 	{
 		//_logger.info("ListScanThread is activated! Listening started");
-		int counts =0;
 		for (HashMap.Entry<String, NodeData> record : Node._gossipMap.entrySet())
 		{
 			String nodeId = record.getKey();
@@ -42,12 +41,13 @@ public class ListScanThread extends Thread {
 					Node._gossipMap.get(nodeId).setLastRecordedTime(System.currentTimeMillis());
 					//_logger.info("Marking the machine: "+nodeId+" Inactive or dead in the membership list! at time "
 					//		+ System.currentTimeMillis());
+					Node._lossCounts++;
 				}
 			}
-			counts++;
 		}
 		//_logger.info("ListScanThread is activated! Listening ends");
-		_logger.info("\t"+counts);
+		Node._totalCounts++;
+		_logger.info("\t"+"Total counts: "+ Node._totalCounts + " || loss counts: "+ Node._lossCounts);
 	}
 
 }
