@@ -63,12 +63,12 @@ public class Node
 		{
 			if(initLogging())
 			{
-				_logger.info("Logging is succesfully initialized! Refer log file CS425_MP2_node.log");
+				//_logger.info("Logging is succesfully initialized! Refer log file CS425_MP2_node.log");
 				System.out.println("Logging is succesfully initialized! Refer log file CS425_MP2_node.log");
 			}
 			else
 			{
-				_logger.info("Logging could not be initialized!");
+				//_logger.info("Logging could not be initialized!");
 				System.out.println("Logging could not be initialized!");
 			}
 			
@@ -100,8 +100,8 @@ public class Node
 			Long currTimeInMiliSec = System.currentTimeMillis();
 			_machineId = _machineIp + ":" + currTimeInMiliSec;
 			
-			_logger.info("Machine IP: "+_machineIp+" and Machine ID: "+_machineId);
-			_logger.info("Adding it's entry in the Gossip list!");
+			//_logger.info("Machine IP: "+_machineIp+" and Machine ID: "+_machineId);
+			//_logger.info("Adding it's entry in the Gossip list!");
 			//System.out.println(machineId);
 			NodeData node = new NodeData(_machineId, 1, currTimeInMiliSec, true);
 			_gossipMap.put(_machineId, node);
@@ -146,8 +146,8 @@ public class Node
 					{
 						String delim = "\t||\t";
 						System.out.println("*********MachineId********"+delim+"**Last Seen**"+delim+"Hearbeat"+delim+"Is Active?");
-						_logger.info("User want to list the current members");
-						_logger.info("*********MachineId********"+delim+"**Last Seen**"+delim+"Hearbeat"+delim+"Is Active?");
+						//_logger.info("User want to list the current members");
+						//_logger.info("*********MachineId********"+delim+"**Last Seen**"+delim+"Hearbeat"+delim+"Is Active?");
 						for (HashMap.Entry<String, NodeData> record : _gossipMap.entrySet())
 						{
 							NodeData temp = record.getValue();
@@ -155,10 +155,10 @@ public class Node
 									+delim+temp.getLastRecordedTime()
 									+delim+temp.getHeartBeat()+"\t"
 									+delim+temp.isActive());
-							_logger.info(record.getKey()
-									+delim+temp.getLastRecordedTime()
-									+delim+temp.getHeartBeat()+"\t"
-									+delim+temp.isActive());
+							//_logger.info(record.getKey()
+							//		+delim+temp.getLastRecordedTime()
+							//		+delim+temp.getHeartBeat()+"\t"
+							//		+delim+temp.isActive());
 						}
 					}
 				}
@@ -167,7 +167,7 @@ public class Node
 					// send a good bye message to the Introducer so that you are quickly observed by 
 					// all nodes that you are leaving.
 					System.out.println("Terminating");
-					_logger.info("Terminating");
+					//_logger.info("Terminating");
 					_listenerThreadStop = true;
 					Node._gossipMap.get(_machineId).setActive(false);
 					Node._gossipMap.get(_machineId).increaseHeartBeat();
@@ -186,10 +186,10 @@ public class Node
 							+delim+temp.getLastRecordedTime()
 							+delim+temp.getHeartBeat()+"\t"
 							+delim+temp.isActive());
-					_logger.info(temp.getNodeId()
-							+delim+temp.getLastRecordedTime()
-							+delim+temp.getHeartBeat()+""
-							+delim+temp.isActive());
+					//_logger.info(temp.getNodeId()
+					//		+delim+temp.getLastRecordedTime()
+					//		+delim+temp.getHeartBeat()+""
+					//		+delim+temp.isActive());
 				}
 				// logic here to enable the user to change the loss rate in command line
 				else if(userCmd.toLowerCase().trim().startsWith("change"))
@@ -203,7 +203,7 @@ public class Node
 							int lr = Integer.valueOf(array[1]);
 							if (lr >= 0 & lr < 31)
 							{
-								_logger.info("The loss rate has been changed from "+Node._lossRate+" to "+lr);
+								//_logger.info("The loss rate has been changed from "+Node._lossRate+" to "+lr);
 								Node._lossRate = lr;								
 							}
 							else 
@@ -214,7 +214,7 @@ public class Node
 					}
 					catch(Exception e)
 					{
-						_logger.error(e);
+						//_logger.error(e);
 						System.out.println("Invalid command");
 					}
 					
@@ -223,26 +223,26 @@ public class Node
 		} 
 		catch (UnknownHostException e) 
 		{
-			_logger.error(e);
+			//_logger.error(e);
 			e.printStackTrace();
 		} catch (IOException e) 
 		{
-			_logger.error(e);
+			//_logger.error(e);
 			e.printStackTrace();
 		} catch (InterruptedException e) 
 		{
-			_logger.error(e);
+			//_logger.error(e);
 			e.printStackTrace();
 		}
 		finally
 		{
 			System.out.println("Good Bye!");
-			_logger.info("Good Bye!");
+			//_logger.info("Good Bye!");
 		}
 
 	}
 
-	public static boolean initLogging() 
+	/*public static boolean initLogging() 
 	{
 		try 
 		{
@@ -261,11 +261,32 @@ public class Node
 			// We don't want application to crash is logging is not working.
 			return false;
 		}
+	}*/
+	
+	public static boolean initLogging() 
+	{
+		try 
+		{
+			PatternLayout lyt = new PatternLayout("%d");
+			RollingFileAppender rollingFileAppender = new RollingFileAppender(lyt, "CS425_MP2_node_plot.log");
+			rollingFileAppender.setLayout(lyt);
+			rollingFileAppender.setName("LOGFILE");
+			rollingFileAppender.setMaxFileSize("64MB");
+			rollingFileAppender.activateOptions();
+			Logger.getRootLogger().addAppender(rollingFileAppender);
+			return true;
+		} 
+		catch (Exception e) 
+		{
+			// do nothing, just return false.
+			// We don't want application to crash is logging is not working.
+			return false;
+		}
 	}
 	
 	public static void checkIntroducer(String ip)
 	{
-		_logger.info("Checking for the introducer.");
+		//_logger.info("Checking for the introducer.");
 		//boolean retVal = false;
 		DatagramSocket socket = null;
 		try
@@ -306,19 +327,19 @@ public class Node
 		}
 		catch(SocketException ex)
 		{
-			_logger.error(ex);
+			//_logger.error(ex);
 			ex.printStackTrace();
 		}
 		catch(IOException ioExcep)
 		{
-			_logger.error(ioExcep);
+			//_logger.error(ioExcep);
 			ioExcep.printStackTrace();
 		} 
 		finally
 		{
 			if(socket != null)
 				socket.close();
-			_logger.info("Exiting from the method checkIntroducer.");
+			//_logger.info("Exiting from the method checkIntroducer.");
 		}
 		//return retVal;
 	}

@@ -32,7 +32,7 @@ public class ListenerThread extends Thread
 
 	public void run()
 	{
-		//_logger.info("Listener thread is activated! Listening ....");
+		////_logger.info("Listener thread is activated! Listening ....");
 		byte[] data = new byte[4096];
 		DatagramSocket listernerSocket;
 		try 
@@ -46,7 +46,7 @@ public class ListenerThread extends Thread
 					listernerSocket.receive(receivedPacket);
 					int port = receivedPacket.getPort();
 					InetAddress ipAddress = receivedPacket.getAddress();
-					_logger.info("Received packet from: "+ipAddress+" at port: "+port);
+					//_logger.info("Received packet from: "+ipAddress+" at port: "+port);
 
 					byte[] receivedBytes = receivedPacket.getData();
 					ByteArrayInputStream bais = new ByteArrayInputStream(receivedBytes);
@@ -59,7 +59,7 @@ public class ListenerThread extends Thread
 					{
 
 						String machineId = record.getKey().trim();
-						_logger.info("******machineId = "+machineId+" Heartbeat = "+record.getValue().getHeartBeat()+" ****************");
+						//_logger.info("******machineId = "+machineId+" Heartbeat = "+record.getValue().getHeartBeat()+" ****************");
 						// to prevent the machine accidentally mark itself dead just because other say so. 
 						if(!machineId.equalsIgnoreCase(Node._machineId))
 						{
@@ -71,19 +71,19 @@ public class ListenerThread extends Thread
 				}
 				catch (IOException e) 
 				{
-					_logger.error(e);
+					//_logger.error(e);
 					e.printStackTrace();
 				}
 				catch (ClassNotFoundException e) 
 				{
-					_logger.error(e);
+					//_logger.error(e);
 					e.printStackTrace();
 				}                
 			}
 		}
 		catch (SocketException e1)
 		{
-			_logger.error(e1);
+			//_logger.error(e1);
 			e1.printStackTrace();
 		}
 	}
@@ -109,7 +109,7 @@ public class ListenerThread extends Thread
 				//add the new member
 				if(!Node._gossipMap.containsKey(id))
 				{
-					_logger.info("Added a new machine: "+id);
+					//_logger.info("Added a new machine: "+id);
 					Node._gossipMap.put(id, nodeData);
 					Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
 				}
@@ -146,7 +146,7 @@ public class ListenerThread extends Thread
 					{
 						// TODO clash of thoughts here. Piyush wants an additional
 						// check on the heartbeat, Kevin disagrees.
-						_logger.info("Marking machine id: "+id+ " as Inactive (dead)");
+						//_logger.info("Marking machine id: "+id+ " as Inactive (dead)");
 						Node._gossipMap.get(id).setActive(false);
 						Node._gossipMap.get(id).setLastRecordedTime(System.currentTimeMillis());
 						// We are updating this so that we can compare it with _TCleanUp.
