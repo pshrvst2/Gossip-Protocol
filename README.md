@@ -1,12 +1,12 @@
     CS425 – MP2 Report
 
     Group 31 members:
-1.	Xiaoming Chen (xchen135)			2.      Piyush Shrivastava (pshrvst2)
+    1.	Xiaoming Chen (xchen135)			2.      Piyush Shrivastava (pshrvst2)
 
-    Design
-The idea here is to build a membership group among seven available CS VM cluster machines. We implement Gossip membership protocol to accomplish this. To make our solution scalable, we have made use of multi-threading and scheduler services available in java. The protocol begins with an ‘introducer’ who is an initiator in the membership. The ip address of the introducer is shared across all the seven machines. Please be noted that all machines know of just one ip address and that is of the introducer. This is unlike MP1, where everyone knew everyone.
+Design
+    The idea here is to build a membership group among seven available CS VM cluster machines. We implement Gossip membership protocol to accomplish this. To make our solution scalable, we have made use of multi-threading and scheduler services available in java. The protocol begins with an ‘introducer’ who is an initiator in the membership. The ip address of the introducer is shared across all the seven machines. Please be noted that all machines know of just one ip address and that is of the introducer. This is unlike MP1, where everyone knew everyone.
 
-    Algorithm used to join group:
+    Algorithm
 1.	Each machine has a unique id (ip: timestamp) and initially asks the user whether he/she wishes to join the membership. The user then selects the option to join.
 2.	The logic then checks whether the machine being used is the introducer or not. If it’s not the introducer, it sends UDP packets to the introducer. The packet includes concurrent membership list (concurrent HashMap to be precise) converted into a byte array buffer data. We definitely want to make sure that we reach to the introducer here, so we send the packets thrice increasing our chances of communicating with the introducer even in a high packet loss network.
 3.	The introducer listens to the incoming messages and as soon as it receives a packet from a new member, it adds it onto its membership list.
@@ -24,3 +24,12 @@ We have a scheduler which spawns a thread every 5 seconds to check whether it’
 
     Integration with MP1
 Like MP1, we have used log4j in our MP2 solution to log the activities occurring at the respective machines. The logs collected have information of nodes joining, leaving, marking other node as active and deleting the node entry from the list. That apart we also log the thread name or the class name in each log statement. In MP1, we only had to edit the filename. With MP1 we were easily able to detect scenarios like deleting a member from the member list.
+
+Intructions to compile and Run:
+    1.Download the code on your machine. 
+    2.Ensure that you have Java 1.8. 
+    3.Navigate to the src folder and the run the following commands:
+    make clean
+    make all
+    make run
+    4.The last command will start the servers. Follow the instructions to join or quit the group, or to view the membership list.
