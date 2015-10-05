@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -20,68 +21,77 @@ public class SenderThread extends Thread
 	private int port;
 	private static String _machineIp;
 	
+	
 	public SenderThread(int port) 
 	{
 		this.port = port;
 		_machineIp = Node._machineIp;
 	}
 
-	
 	public void run()
-	{
+	{		
+		// For the demo, we wanna see the some message get lost in the Internet, we don't have the control of that, so we decide to do this in our code. 
+		Random r = new Random();
+		int randInt = r.nextInt(100)+1;
 		
-		//_logger.info("Sender thread is activated! sending started");
-		//byte[] data = new byte[1024];
-		DatagramSocket senderSocket;
-		try
+		if( randInt > Node._lossRate)
 		{
-			senderSocket = new DatagramSocket();
-			int length = 0;
-			byte[] buf = null;
-			
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			ObjectOutputStream objOpStream = new ObjectOutputStream(byteArrayOutputStream);
+			//_logger.info("Sender thread is activated! sending started");
+			//byte[] data = new byte[1024];			
+			DatagramSocket senderSocket;
+			try
+			{
+				senderSocket = new DatagramSocket();
+				int length = 0;
+				byte[] buf = null;
+				
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				ObjectOutputStream objOpStream = new ObjectOutputStream(byteArrayOutputStream);
 
-			Set<String> ip2bSent = get2RandomIpAddresses(_machineIp);
-			
-			// update the heart-beat and time stamp before send out the membership list
-			updateHearbeatAndTimeStamp();
-			// check if there's any member in the member list beside itself
-			HashMap<String, NodeData> map = new HashMap<String, NodeData>();
-			for (HashMap.Entry<String, NodeData> record : Node._gossipMap.entrySet())
-			{
-				map.put(record.getKey(), record.getValue());
-				_logger.info("packet info: id "+record.getValue().getNodeId() + " || time stamp: "+ record.getValue().getLastRecordedTime()+ 
-						" || heartbeat: "+record.getValue().getHeartBeat()+ " || status: "+record.getValue().isActive());
-			}
-			if(!ip2bSent.isEmpty())
-			{
-				objOpStream.writeObject(map);
-				buf = byteArrayOutputStream.toByteArray();
-				length = buf.length;
-			
-				for(String ip : ip2bSent)
+				Set<String> ip2bSent = get2RandomIpAddresses(_machineIp);
+				
+				// update the heart-beat and time stamp before send out the membership list
+				updateHearbeatAndTimeStamp();
+				// check if there's any member in the member list beside itself
+				HashMap<String, NodeData> map = new HashMap<String, NodeData>();
+				for (HashMap.Entry<String, NodeData> record : Node._gossipMap.entrySet())
 				{
-					DatagramPacket dataPacket = new DatagramPacket(buf, length);
-					dataPacket.setAddress(InetAddress.getByName(ip));
-					dataPacket.setPort(port);
-					senderSocket.send(dataPacket);
-					_logger.info("Sent packet form machine ip : "+ _machineIp + " to machine ip : "+ ip );					
+					map.put(record.getKey(), record.getValue());
+					_logger.info("packet info: id "+record.getValue().getNodeId() + " || time stamp: "+ record.getValue().getLastRecordedTime()+ 
+							" || heartbeat: "+record.getValue().getHeartBeat()+ " || status: "+record.getValue().isActive());
 				}
+				if(!ip2bSent.isEmpty())
+				{
+					objOpStream.writeObject(map);
+					buf = byteArrayOutputStream.toByteArray();
+					length = buf.length;
+				
+					for(String ip : ip2bSent)
+					{
+						DatagramPacket dataPacket = new DatagramPacket(buf, length);
+						dataPacket.setAddress(InetAddress.getByName(ip));
+						dataPacket.setPort(port);
+						senderSocket.send(dataPacket);
+						_logger.info("Sent packet form machine ip : "+ _machineIp + " to machine ip : "+ ip );					
+					}
+				}
+				//_logger.info("Sender thread is activated! sending ends");
 			}
-			//_logger.info("Sender thread is activated! sending ends");
+			catch(SocketException e1)
+			{
+				_logger.error(e1);
+				e1.printStackTrace();
+			}
+			catch(Exception e)
+			{
+				_logger.error(e);
+				e.printStackTrace();
+			}
 		}
-		catch(SocketException e1)
+		else
 		{
-			_logger.error(e1);
-			e1.printStackTrace();
+			_logger.info("!!! The loss rate is "+  Node._lossRate + " || the random number is "+randInt +" ==> message get lost in the internet !!!!! ");
 		}
-		catch(Exception e)
-		{
-			_logger.error(e);
-			e.printStackTrace();
-		}
-	
 	}
 	
 	public static Set<String> get2RandomIpAddresses(String machineId)

@@ -45,6 +45,8 @@ public class Node
 	public static int _TfailInMilliSec = 3000;
 	public static int _TCleanUpInMilliSec = 3000;
 	public static TimeUnit unit = MILLISECONDS;
+	public static int _lossRate =0;
+	
 	
 	//public static List<NodeData> _gossipList = Collections.synchronizedList(new ArrayList<NodeData>());
 	// Thread safe data structure needed to store the details of all the machines in the 
@@ -134,6 +136,7 @@ public class Node
 				System.out.println("Type 'list' to view the current membership list.");
 				System.out.println("Type 'quit' to quit the group and close servers");
 				System.out.println("Type 'info' to know your machine details");
+				System.out.println("Type 'change' following the desired loss rate to change the current loss rate : "+_lossRate + " EX: 'change:30'");
 				
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				String userCmd = reader.readLine();
@@ -154,7 +157,7 @@ public class Node
 									+delim+temp.isActive());
 							_logger.info(record.getKey()
 									+delim+temp.getLastRecordedTime()
-									+delim+temp.getHeartBeat()+""
+									+delim+temp.getHeartBeat()+"\t"
 									+delim+temp.isActive());
 						}
 					}
@@ -187,6 +190,34 @@ public class Node
 							+delim+temp.getLastRecordedTime()
 							+delim+temp.getHeartBeat()+""
 							+delim+temp.isActive());
+				}
+				// logic here to enable the user to change the loss rate in command line
+				else if(userCmd.toLowerCase().trim().startsWith("change"))
+				{
+					try 
+					{
+						String[] array =  userCmd.split(":");
+						// we r so careful here
+						if(array[0].equalsIgnoreCase("change"))
+						{
+							int lr = Integer.valueOf(array[1]);
+							if (lr >= 0 & lr < 31)
+							{
+								_logger.info("The loss rate has been changed from "+Node._lossRate+" to "+lr);
+								Node._lossRate = lr;								
+							}
+							else 
+							{
+								System.out.println("The acceptable loss rate should be in range [0,30]");
+							}
+						}
+					}
+					catch(Exception e)
+					{
+						_logger.error(e);
+						System.out.println("Invalid command");
+					}
+					
 				}
 			}
 		} 
