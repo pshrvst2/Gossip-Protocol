@@ -119,7 +119,7 @@ public class Node
 			
 			// logic to send periodically
 			ScheduledExecutorService _schedulerService = Executors.newScheduledThreadPool(3);
-			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 2000, unit);
+			_schedulerService.scheduleAtFixedRate(new SenderThread(_portReceiver), 0, 500, unit);
 			
 			// logic to scan the list and perform necessary actions.
 			_schedulerService.scheduleAtFixedRate(new ListScanThread(), 0, 100, unit);
