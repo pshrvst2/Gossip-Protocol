@@ -32,11 +32,11 @@ public class SenderThread extends Thread
 	{		
 		// For the demo, we wanna see the some message get lost in the Internet, we don't have the control of that, so we decide to do this in our code. 
 		Random r = new Random();
-		int randInt = r.nextInt(100)+1;
+		int randInt = r.nextInt(100);
 		
-		if( randInt > Node._lossRate)
+		if(! (randInt > (100 - Node._lossRate)))
 		{
-			////_logger.info("Sender thread is activated! sending started");
+			//_logger.info("Sender thread is activated! sending started");
 			//byte[] data = new byte[1024];			
 			DatagramSocket senderSocket;
 			try
@@ -57,8 +57,8 @@ public class SenderThread extends Thread
 				for (HashMap.Entry<String, NodeData> record : Node._gossipMap.entrySet())
 				{
 					map.put(record.getKey(), record.getValue());
-					//_logger.info("packet info: id "+record.getValue().getNodeId() + " || time stamp: "+ record.getValue().getLastRecordedTime()+ 
-					//		" || heartbeat: "+record.getValue().getHeartBeat()+ " || status: "+record.getValue().isActive());
+					_logger.info("packet info: id "+record.getValue().getNodeId() + " || time stamp: "+ record.getValue().getLastRecordedTime()+ 
+							" || heartbeat: "+record.getValue().getHeartBeat()+ " || status: "+record.getValue().isActive());
 				}
 				if(!ip2bSent.isEmpty())
 				{
@@ -72,25 +72,25 @@ public class SenderThread extends Thread
 						dataPacket.setAddress(InetAddress.getByName(ip));
 						dataPacket.setPort(port);
 						senderSocket.send(dataPacket);
-						//_logger.info("Sent packet form machine ip : "+ _machineIp + " to machine ip : "+ ip );					
+						_logger.info("Sent packet form machine ip : "+ _machineIp + " to machine ip : "+ ip );					
 					}
 				}
-				////_logger.info("Sender thread is activated! sending ends");
+				//_logger.info("Sender thread is activated! sending ends");
 			}
 			catch(SocketException e1)
 			{
-				//_logger.error(e1);
+				_logger.error(e1);
 				e1.printStackTrace();
 			}
 			catch(Exception e)
 			{
-				//_logger.error(e);
+				_logger.error(e);
 				e.printStackTrace();
 			}
 		}
 		else
 		{
-			//_logger.info("!!! The loss rate is "+  Node._lossRate + " || the random number is "+randInt +" ==> message get lost in the internet !!!!! ");
+			_logger.info("!!! The loss rate is "+  Node._lossRate + " || the random number is "+randInt +" ==> message get lost in the internet !!!!! ");
 		}
 	}
 	
