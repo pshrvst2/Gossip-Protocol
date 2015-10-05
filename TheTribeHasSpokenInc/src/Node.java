@@ -136,7 +136,7 @@ public class Node
 				System.out.println("Type 'list' to view the current membership list.");
 				System.out.println("Type 'quit' to quit the group and close servers");
 				System.out.println("Type 'info' to know your machine details");
-				System.out.println("Type 'change' following the desired loss rate to change the current loss rate : "+_lossRate + " EX: 'change:30'");
+				System.out.println("Type 'change' following the desired loss rate to change the current loss rate = '"+_lossRate + "%' ==> EX: 'change:30'");
 				
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				String userCmd = reader.readLine();
@@ -198,7 +198,7 @@ public class Node
 					{
 						String[] array =  userCmd.split(":");
 						// we r so careful here
-						if(array[0].equalsIgnoreCase("change"))
+						if(array[0].trim().equalsIgnoreCase("change"))
 						{
 							int lr = Integer.valueOf(array[1]);
 							if (lr >= 0 & lr < 31)
